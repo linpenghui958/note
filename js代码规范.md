@@ -981,10 +981,13 @@
 
   <a name="arrows--use-them"></a><a name="8.1"></a>
   - [8.1](#arrows--use-them) When you must use an anonymous function (as when passing an inline callback), use arrow function notation. eslint: [`prefer-arrow-callback`](https://eslint.org/docs/rules/prefer-arrow-callback.html), [`arrow-spacing`](https://eslint.org/docs/rules/arrow-spacing.html)
+  	当你必须要使用一个匿名函数当传递内联函数时，使用箭头函数
 
     > Why? It creates a version of the function that executes in the context of `this`, which is usually what you want, and is a more concise syntax.
+    > why? 它创建了一个在this执行上下文的函数版本，这通常是你想要的，并且这会使得语句更简洁
 
     > Why not? If you have a fairly complicated function, you might move that logic out into its own named function expression.
+    > why not? 如果你有一个相当难懂的函数，你或许可以将逻辑移到属于以它自己命名的函数表达式
 
     ```javascript
     // bad
@@ -1002,8 +1005,10 @@
 
   <a name="arrows--implicit-return"></a><a name="8.2"></a>
   - [8.2](#arrows--implicit-return) If the function body consists of a single statement returning an [expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#Expressions) without side effects, omit the braces and use the implicit return. Otherwise, keep the braces and use a `return` statement. eslint: [`arrow-parens`](https://eslint.org/docs/rules/arrow-parens.html), [`arrow-body-style`](https://eslint.org/docs/rules/arrow-body-style.html)
+  	如果函数内包含一个独立的语句，返回一个没有负责用的表达式，省略括号并使用隐式返回，或者保留括号并使用return语句
 
     > Why? Syntactic sugar. It reads well when multiple functions are chained together.
+    > why? 语法糖，当多个函数被链接在一起这提高了可读性
 
     ```javascript
     // bad
@@ -1047,8 +1052,10 @@
 
   <a name="arrows--paren-wrap"></a><a name="8.3"></a>
   - [8.3](#arrows--paren-wrap) In case the expression spans over multiple lines, wrap it in parentheses for better readability.
+	万一表达式有多行，将它用括号包裹起来提高可读性
 
     > Why? It shows clearly where the function starts and ends.
+    > why? 这样可以更清楚的看到函数的结尾和开始
 
     ```javascript
     // bad
@@ -1069,8 +1076,11 @@
 
   <a name="arrows--one-arg-parens"></a><a name="8.4"></a>
   - [8.4](#arrows--one-arg-parens) If your function takes a single argument and doesn’t use braces, omit the parentheses. Otherwise, always include parentheses around arguments for clarity and consistency. Note: it is also acceptable to always use parentheses, in which case use the [“always” option](https://eslint.org/docs/rules/arrow-parens#always) for eslint. eslint: [`arrow-parens`](https://eslint.org/docs/rules/arrow-parens.html)
+  	如果你的函数只有一个参数，可以不使用括号。否则捏可以总是使用括号包裹以保证清晰和一致性。注意：每一次都使用括号时可以接受的。你可以使用[“always” option](https://eslint.org/docs/rules/arrow-parens#always) for eslint. eslint: [`arrow-parens`](https://eslint.org/docs/rules/arrow-parens.html)
+
 
     > Why? Less visual clutter.
+    > why? 减少视觉上的混乱
 
     ```javascript
     // bad
@@ -1099,6 +1109,7 @@
 
   <a name="arrows--confusing"></a><a name="8.5"></a>
   - [8.5](#arrows--confusing) Avoid confusing arrow function syntax (`=>`) with comparison operators (`<=`, `>=`). eslint: [`no-confusing-arrow`](https://eslint.org/docs/rules/no-confusing-arrow)
+  	避免对箭头函数使用比较运算符，使人困惑难懂。
 
     ```javascript
     // bad
@@ -1119,6 +1130,7 @@
 
   <a name="whitespace--implicit-arrow-linebreak"></a>
   - [8.6](#whitespace--implicit-arrow-linebreak) Enforce the location of arrow function bodies with implicit returns. eslint: [`implicit-arrow-linebreak`](https://eslint.org/docs/rules/implicit-arrow-linebreak)
+	注意箭头函数体隐式返回的位置
 
     ```javascript
     // bad
@@ -1142,9 +1154,11 @@
 
   <a name="constructors--use-class"></a><a name="9.1"></a>
   - [9.1](#constructors--use-class) Always use `class`. Avoid manipulating `prototype` directly.
+	使用`class`，避免直接使用`prototype`
 
     > Why? `class` syntax is more concise and easier to reason about.
-
+	> why? `class`语法更加简洁并且可读性更好
+	
     ```javascript
     // bad
     function Queue(contents = []) {
@@ -1171,8 +1185,10 @@
 
   <a name="constructors--extends"></a><a name="9.2"></a>
   - [9.2](#constructors--extends) Use `extends` for inheritance.
+  	使用`extends`代替inheritance
 
     > Why? It is a built-in way to inherit prototype functionality without breaking `instanceof`.
+    > why? 它是一个内置的方法，可以在不破坏 instanceof 的情况下继承原型功能。
 
     ```javascript
     // bad
