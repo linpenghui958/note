@@ -1211,6 +1211,7 @@
 
   <a name="constructors--chaining"></a><a name="9.3"></a>
   - [9.3](#constructors--chaining) Methods can return `this` to help with method chaining.
+  	可以通过返回`this`来帮助函数链式调用
 
     ```javascript
     // bad
@@ -1248,6 +1249,7 @@
 
   <a name="constructors--tostring"></a><a name="9.4"></a>
   - [9.4](#constructors--tostring) It’s okay to write a custom `toString()` method, just make sure it works successfully and causes no side effects.
+  	可以去写一个自定义的`toString()`方法，只需要确定它能正常工作并不会产生任何副作用
 
     ```javascript
     class Jedi {
@@ -1267,6 +1269,7 @@
 
   <a name="constructors--no-useless"></a><a name="9.5"></a>
   - [9.5](#constructors--no-useless) Classes have a default constructor if one is not specified. An empty constructor function or one that just delegates to a parent class is unnecessary. eslint: [`no-useless-constructor`](https://eslint.org/docs/rules/no-useless-constructor)
+  	如果没有指定默认类构造函数，则ES2015提供一个默认类构造函数。因此，不需要提供空的构造函数，或者只委托给父类
 
     ```javascript
     // bad
@@ -1296,8 +1299,10 @@
 
   <a name="classes--no-duplicate-members"></a>
   - [9.6](#classes--no-duplicate-members) Avoid duplicate class members. eslint: [`no-dupe-class-members`](https://eslint.org/docs/rules/no-dupe-class-members)
+  	避免复制类的成员
 
     > Why? Duplicate class member declarations will silently prefer the last one - having duplicates is almost certainly a bug.
+    > why? 复制类成员的声明会默认倾向于最后一个-有重复声明很可能是一个bug
 
     ```javascript
     // bad
