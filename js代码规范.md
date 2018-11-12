@@ -1438,7 +1438,9 @@
   <a name="modules--imports-first"></a>
   - [10.7](#modules--imports-first) Put all `import`s above non-import statements.
  eslint: [`import/first`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/first.md)
+ 	把所有导入语句放在非导入语句之上
     > Why? Since `import`s are hoisted, keeping them all at the top prevents surprising behavior.
+    > why? 自从`import`会被提升，保持它们都在最上面以防意外的情况出现。
 
     ```javascript
     // bad
@@ -1456,8 +1458,10 @@
 
   <a name="modules--multiline-imports-over-newlines"></a>
   - [10.8](#modules--multiline-imports-over-newlines) Multiline imports should be indented just like multiline array and object literals.
+  	多行的导入必须像多行数组和对象一样缩进，换行。
 
     > Why? The curly braces follow the same indentation rules as every other curly brace block in the style guide, as do the trailing commas.
+    > why?大括号遵循与样式指南中其他大括号相同的缩进规则，以及逗号结尾。
 
     ```javascript
     // bad
@@ -1476,7 +1480,9 @@
   <a name="modules--no-webpack-loader-syntax"></a>
   - [10.9](#modules--no-webpack-loader-syntax) Disallow Webpack loader syntax in module import statements.
  eslint: [`import/no-webpack-loader-syntax`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-webpack-loader-syntax.md)
+ 	禁止在模块导入语句中使用webpack loader语法
     > Why? Since using Webpack syntax in the imports couples the code to a module bundler. Prefer using the loader syntax in `webpack.config.js`.
+    更建议在`webpack.config.js`中使用loader语法
 
     ```javascript
     // bad
@@ -1494,10 +1500,12 @@
 
   <a name="iterators--nope"></a><a name="11.1"></a>
   - [11.1](#iterators--nope) Don’t use iterators. Prefer JavaScript’s higher-order functions instead of loops like `for-in` or `for-of`. eslint: [`no-iterator`](https://eslint.org/docs/rules/no-iterator.html) [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax)
+  	不要使用 iterators，推荐使用js更高阶的函数来代替比如像`for-in` or `for-of`的循环
 
     > Why? This enforces our immutable rule. Dealing with pure functions that return values is easier to reason about than side effects.
-
+    > why? 这强制让我们执行不可变规则，处理有返回值的简单函数比考虑副作用更容易。
     > Use `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` / ... to iterate over arrays, and `Object.keys()` / `Object.values()` / `Object.entries()` to produce arrays so you can iterate over objects.
+    > 使用`map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` /去遍历数组， 使用`Object.keys()` / `Object.values()` / `Object.entries()` 去创造一个可以用来遍历对象的数组
 
     ```javascript
     const numbers = [1, 2, 3, 4, 5];
@@ -1538,13 +1546,18 @@
 
   <a name="generators--nope"></a><a name="11.2"></a>
   - [11.2](#generators--nope) Don’t use generators for now.
+  	现在不要使用生成器
 
     > Why? They don’t transpile well to ES5.
+	> why? 它们还不能很好的转换成ES5
 
   <a name="generators--spacing"></a>
   - [11.3](#generators--spacing) If you must use generators, or if you disregard [our advice](#generators--nope), make sure their function signature is spaced properly. eslint: [`generator-star-spacing`](https://eslint.org/docs/rules/generator-star-spacing)
+  	如果你必须要使用生成器，或者你选择无视我们的建议，确保用合适的声明方式来命名函数
 
     > Why? `function` and `*` are part of the same conceptual keyword - `*` is not a modifier for `function`, `function*` is a unique construct, different from `function`.
+    > why? function和*都是关键词，*不是function的修饰词，function*是一个与function不同的独特结构
+    
 
     ```javascript
     // bad
@@ -1608,6 +1621,8 @@
 
   <a name="properties--dot"></a><a name="12.1"></a>
   - [12.1](#properties--dot) Use dot notation when accessing properties. eslint: [`dot-notation`](https://eslint.org/docs/rules/dot-notation.html)
+	使用点号去访问一个属性
+	
 
     ```javascript
     const luke = {
@@ -1624,6 +1639,7 @@
 
   <a name="properties--bracket"></a><a name="12.2"></a>
   - [12.2](#properties--bracket) Use bracket notation `[]` when accessing properties with a variable.
+  	当使用一个变量去接受一个属性之的时候用[]
 
     ```javascript
     const luke = {
@@ -1639,6 +1655,7 @@
     ```
   <a name="es2016-properties--exponentiation-operator"></a>
   - [12.3](#es2016-properties--exponentiation-operator) Use exponentiation operator `**` when calculating exponentiations. eslint: [`no-restricted-properties`](https://eslint.org/docs/rules/no-restricted-properties).
+  	使用求幂运算符 ** 当你要计算求幂时
 
     ```javascript
     // bad
@@ -1654,6 +1671,7 @@
 
   <a name="variables--const"></a><a name="13.1"></a>
   - [13.1](#variables--const) Always use `const` or `let` to declare variables. Not doing so will result in global variables. We want to avoid polluting the global namespace. Captain Planet warned us of that. eslint: [`no-undef`](https://eslint.org/docs/rules/no-undef) [`prefer-const`](https://eslint.org/docs/rules/prefer-const)
+	建议使用const和let来定义变量。不这样做会导致全局变量，我们想要尽可能避免污染全局命名空间。行星船长也这么警告过我们。
 
     ```javascript
     // bad
@@ -1665,8 +1683,10 @@
 
   <a name="variables--one-const"></a><a name="13.2"></a>
   - [13.2](#variables--one-const) Use one `const` or `let` declaration per variable or assignment. eslint: [`one-var`](https://eslint.org/docs/rules/one-var.html)
+  	对每一个变量或者赋值使用一个const或者let
 
     > Why? It’s easier to add new variable declarations this way, and you never have to worry about swapping out a `;` for a `,` or introducing punctuation-only diffs. You can also step through each declaration with the debugger, instead of jumping through all of them at once.
+    > why？这样更容易去添加变量声明，并且你也不用担心那";"写成"，"，后者引入punctuation-only的差别。你同样可以通过debugger对每一个变量进行步进，而不是一次跳过所有的声明。
 
     ```javascript
     // bad
@@ -1688,8 +1708,10 @@
 
   <a name="variables--const-let-group"></a><a name="13.3"></a>
   - [13.3](#variables--const-let-group) Group all your `const`s and then group all your `let`s.
+  	先将所有的const分组，然后讲所有的let进行分组。
 
     > Why? This is helpful when later on you might need to assign a variable depending on one of the previous assigned variables.
+    > why? 当以后您可能需要根据前面分配的变量分配变量时，这是很有帮助的。
 
     ```javascript
     // bad
