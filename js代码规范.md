@@ -1328,8 +1328,10 @@
 
   <a name="modules--use-them"></a><a name="10.1"></a>
   - [10.1](#modules--use-them) Always use modules (`import`/`export`) over a non-standard module system. You can always transpile to your preferred module system.
+	你可能经常使用模块（import/export）在非标准模块系统。你可以随时转向你更倾向的模块系统
 
     > Why? Modules are the future, let’s start using the future now.
+    > why? 模块是未来的趋势。
 
     ```javascript
     // bad
@@ -1347,8 +1349,10 @@
 
   <a name="modules--no-wildcard"></a><a name="10.2"></a>
   - [10.2](#modules--no-wildcard) Do not use wildcard imports.
+	不要使用通配符进行引入
 
     > Why? This makes sure you have a single default export.
+    > why? 这必须得保证你有一个单独的导出
 
     ```javascript
     // bad
@@ -1360,8 +1364,10 @@
 
   <a name="modules--no-export-from-import"></a><a name="10.3"></a>
   - [10.3](#modules--no-export-from-import) And do not export directly from an import.
+  	不要直接从一个引入直接导出
 
     > Why? Although the one-liner is concise, having one clear way to import and one clear way to export makes things consistent.
+    > why? 尽管少些一行会更简洁，但是用一个简洁的引入和一个简洁的导出可以使得代码一致性更好
 
     ```javascript
     // bad
@@ -1377,7 +1383,9 @@
   <a name="modules--no-duplicate-imports"></a>
   - [10.4](#modules--no-duplicate-imports) Only import from a path in one place.
  eslint: [`no-duplicate-imports`](https://eslint.org/docs/rules/no-duplicate-imports)
+	同一个路径只引入一次
     > Why? Having multiple lines that import from the same path can make code harder to maintain.
+    > why? 多次引入同一路径会使得代码编的难以维护
 
     ```javascript
     // bad
@@ -1398,7 +1406,10 @@
   <a name="modules--no-mutable-exports"></a>
   - [10.5](#modules--no-mutable-exports) Do not export mutable bindings.
  eslint: [`import/no-mutable-exports`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-mutable-exports.md)
+	不要导出可变的引用
     > Why? Mutation should be avoided in general, but in particular when exporting mutable bindings. While this technique may be needed for some special cases, in general, only constant references should be exported.
+    > why? 总体来说需要避免变化，但是在导出可变引用时属于特殊情况。
+    > 只有某些特殊的情况可能需要这种技巧，但是总的来说，只有常量可以被导出。
 
     ```javascript
     // bad
@@ -1413,8 +1424,9 @@
   <a name="modules--prefer-default-export"></a>
   - [10.6](#modules--prefer-default-export) In modules with a single export, prefer default export over named export.
  eslint: [`import/prefer-default-export`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/prefer-default-export.md)
+	在一个单一模块，导出默认模块而不是命名模块
     > Why? To encourage more files that only ever export one thing, which is better for readability and maintainability.
-
+	> why? 为了鼓励更多的文件只导出一件东西，这样可读性和可维护性更好。	
     ```javascript
     // bad
     export function foo() {}
