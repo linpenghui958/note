@@ -1913,10 +1913,11 @@
 
 **[⬆ back to top](#table-of-contents)**
 
-## Hoisting
+## Hoisting(提升)
 
   <a name="hoisting--about"></a><a name="14.1"></a>
   - [14.1](#hoisting--about) `var` declarations get hoisted to the top of their closest enclosing function scope, their assignment does not. `const` and `let` declarations are blessed with a new concept called [Temporal Dead Zones (TDZ)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_Dead_Zone). It’s important to know why [typeof is no longer safe](http://es-discourse.com/t/why-typeof-is-no-longer-safe/15).
+  	用`var`的声明会提升到最近闭合的函数作用于的顶部，但是它们的赋值并不会。const和let声明被赋予了一个新的概念叫暂时死亡区域？了解为什么typeof不再安全是很重要的。
 
     ```javascript
     // we know this wouldn’t work (assuming there
@@ -1953,6 +1954,7 @@
 
   <a name="hoisting--anon-expressions"></a><a name="14.2"></a>
   - [14.2](#hoisting--anon-expressions) Anonymous function expressions hoist their variable name, but not the function assignment.
+	匿名函数的变量名会提升，但是函数体的赋值并不会
 
     ```javascript
     function example() {
@@ -1968,6 +1970,7 @@
 
   <a name="hoisting--named-expresions"></a><a name="hoisting--named-expressions"></a><a name="14.3"></a>
   - [14.3](#hoisting--named-expressions) Named function expressions hoist the variable name, not the function name or the function body.
+  	具名函数表达式提升变量名，而不是函数名或函数体。
 
     ```javascript
     function example() {
@@ -1997,6 +2000,7 @@
 
   <a name="hoisting--declarations"></a><a name="14.4"></a>
   - [14.4](#hoisting--declarations) Function declarations hoist their name and the function body.
+  	函数声明不过会提升他们的名字还会提升函数体。
 
     ```javascript
     function example() {
@@ -2012,19 +2016,22 @@
 
 **[⬆ back to top](#table-of-contents)**
 
-## Comparison Operators & Equality
+## Comparison Operators & Equality （比较运算符和等号）
 
   <a name="comparison--eqeqeq"></a><a name="15.1"></a>
   - [15.1](#comparison--eqeqeq) Use `===` and `!==` over `==` and `!=`. eslint: [`eqeqeq`](https://eslint.org/docs/rules/eqeqeq.html)
+	使用===和!==而不是 == 和 !=
 
   <a name="comparison--if"></a><a name="15.2"></a>
   - [15.2](#comparison--if) Conditional statements such as the `if` statement evaluate their expression using coercion with the `ToBoolean` abstract method and always follow these simple rules:
+  	条件语句（例如if）使用ToBoolean的抽象方法对其进行强制转换，并始终遵行这些简单规则。
 
     - **Objects** evaluate to **true**
     - **Undefined** evaluates to **false**
     - **Null** evaluates to **false**
     - **Booleans** evaluate to **the value of the boolean**
     - **Numbers** evaluate to **false** if **+0, -0, or NaN**, otherwise **true**
+    - 如果为+0 -0 NaN则为false，其他为true
     - **Strings** evaluate to **false** if an empty string `''`, otherwise **true**
 
     ```javascript
@@ -2036,6 +2043,7 @@
 
   <a name="comparison--shortcuts"></a><a name="15.3"></a>
   - [15.3](#comparison--shortcuts) Use shortcuts for booleans, but explicit comparisons for strings and numbers.
+  	可以使用简写来求布尔值，但比较字符串和数字要明确的写清楚。
 
     ```javascript
     // bad
@@ -2074,8 +2082,10 @@
 
   <a name="comparison--switch-blocks"></a><a name="15.5"></a>
   - [15.5](#comparison--switch-blocks) Use braces to create blocks in `case` and `default` clauses that contain lexical declarations (e.g. `let`, `const`, `function`, and `class`). eslint: [`no-case-declarations`](https://eslint.org/docs/rules/no-case-declarations.html)
+  	在 case 和 default 的子句中，如果存在声明 (例如. let, const, function, 和 class)，使用大括号来创建块 
 
     > Why? Lexical declarations are visible in the entire `switch` block but only get initialized when assigned, which only happens when its `case` is reached. This causes problems when multiple `case` clauses attempt to define the same thing.
+    > why? 因为在整个switch快中，变量的声明都是可见的，虽然并未复制，以防影响到其他的case情况，使用大括号来创建快级作用域消除对其他case情况的影响。
 
     ```javascript
     // bad
@@ -2122,6 +2132,7 @@
 
   <a name="comparison--nested-ternaries"></a><a name="15.6"></a>
   - [15.6](#comparison--nested-ternaries) Ternaries should not be nested and generally be single line expressions. eslint: [`no-nested-ternary`](https://eslint.org/docs/rules/no-nested-ternary.html)
+  	三元表达式通常都是单行的，不应该被嵌套
 
     ```javascript
     // bad
@@ -2143,6 +2154,7 @@
 
   <a name="comparison--unneeded-ternary"></a><a name="15.7"></a>
   - [15.7](#comparison--unneeded-ternary) Avoid unneeded ternary statements. eslint: [`no-unneeded-ternary`](https://eslint.org/docs/rules/no-unneeded-ternary.html)
+  	避免没有必要的三元表达式
 
     ```javascript
     // bad
@@ -2158,8 +2170,10 @@
 
   <a name="comparison--no-mixed-operators"></a>
   - [15.8](#comparison--no-mixed-operators) When mixing operators, enclose them in parentheses. The only exception is the standard arithmetic operators (`+`, `-`, `*`, & `/`) since their precedence is broadly understood. eslint: [`no-mixed-operators`](https://eslint.org/docs/rules/no-mixed-operators.html)
+  	当混合运算符时，将他们用圆括号包裹起来。除了标准运算符(`+`, `-`, `*`, & `/`) ，因为他们的优先级被广泛理解。
 
     > Why? This improves readability and clarifies the developer’s intention.
+    > why？ 这提高了代码的可读性并清楚的表达了
 
     ```javascript
     // bad
@@ -2191,10 +2205,11 @@
 
 **[⬆ back to top](#table-of-contents)**
 
-## Blocks
+## Blocks 块
 
   <a name="blocks--braces"></a><a name="16.1"></a>
   - [16.1](#blocks--braces) Use braces with all multi-line blocks. eslint: [`nonblock-statement-body-position`](https://eslint.org/docs/rules/nonblock-statement-body-position)
+	使用括号讲多行的块包裹起来
 
     ```javascript
     // bad
@@ -2220,6 +2235,7 @@
 
   <a name="blocks--cuddled-elses"></a><a name="16.2"></a>
   - [16.2](#blocks--cuddled-elses) If you’re using multi-line blocks with `if` and `else`, put `else` on the same line as your `if` block’s closing brace. eslint: [`brace-style`](https://eslint.org/docs/rules/brace-style.html)
+  	如果你在if和else语句中使用了多行代码块，请将eles同样放在if闭合的括号旁边。
 
     ```javascript
     // bad
@@ -2242,6 +2258,7 @@
 
   <a name="blocks--no-else-return"></a><a name="16.3"></a>
   - [16.3](#blocks--no-else-return) If an `if` block always executes a `return` statement, the subsequent `else` block is unnecessary. A `return` in an `else if` block following an `if` block that contains a `return` can be separated into multiple `if` blocks. eslint: [`no-else-return`](https://eslint.org/docs/rules/no-else-return)
+  	如果一个if代码块总是有分开的return语句，随后的eles语句并不是必须的。如果一个包含 return 语句的 else if 块，在一个包含了 return 语句的 if 块之后，那么可以拆成多个 if 块。
 
     ```javascript
     // bad
@@ -2307,12 +2324,14 @@
 
 **[⬆ back to top](#table-of-contents)**
 
-## Control Statements
+## Control Statements （控制语句）
 
   <a name="control-statements"></a>
   - [17.1](#control-statements) In case your control statement (`if`, `while` etc.) gets too long or exceeds the maximum line length, each (grouped) condition could be put into a new line. The logical operator should begin the line.
+  	如果你的控制语句（if while等）太长或者超出最大的行宽，每一个条件语句可以分成新的一行，逻辑运算符必须放在行首。
 
     > Why? Requiring operators at the beginning of the line keeps the operators aligned and follows a pattern similar to method chaining. This also improves readability by making it easier to visually follow complex logic.
+    > why？ 在行头要求操作符保持对齐，并遵循类似的方法链模式，这样也提高了代码的可读性，并使其更容易的展示了复杂的逻辑。
 
     ```javascript
     // bad
@@ -2365,6 +2384,7 @@
 
   <a name="control-statement--value-selection"></a>
   - [17.2](#control-statements--value-selection) Don't use selection operators in place of control statements.
+  	不要用选择运算符来代替控制语句
 
     ```javascript
     // bad
