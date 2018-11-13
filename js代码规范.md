@@ -1736,8 +1736,10 @@
 
   <a name="variables--define-where-used"></a><a name="13.4"></a>
   - [13.4](#variables--define-where-used) Assign variables where you need them, but place them in a reasonable place.
+	在你需要的地方定义变量，但是把他们放在一个合理的位置
 
     > Why? `let` and `const` are block scoped and not function scoped.
+    > why？ `let`和`const`是块级作用域而不是函数作用域
 
     ```javascript
     // bad - unnecessary function call
@@ -1774,8 +1776,10 @@
     ```
   <a name="variables--no-chain-assignment"></a><a name="13.5"></a>
   - [13.5](#variables--no-chain-assignment) Don’t chain variable assignments. eslint: [`no-multi-assign`](https://eslint.org/docs/rules/no-multi-assign)
+  	不要链式的定义变量
 
     > Why? Chaining variable assignments creates implicit global variables.
+    > why? 链式定义变量会隐式的生产全局变量
 
     ```javascript
     // bad
@@ -1807,8 +1811,10 @@
 
   <a name="variables--unary-increment-decrement"></a><a name="13.6"></a>
   - [13.6](#variables--unary-increment-decrement) Avoid using unary increments and decrements (`++`, `--`). eslint [`no-plusplus`](https://eslint.org/docs/rules/no-plusplus)
+  	避免使用一元加号和自增自减
 
     > Why? Per the eslint documentation, unary increment and decrement statements are subject to automatic semicolon insertion and can cause silent errors with incrementing or decrementing values within an application. It is also more expressive to mutate your values with statements like `num += 1` instead of `num++` or `num ++`. Disallowing unary increment and decrement statements also prevents you from pre-incrementing/pre-decrementing values unintentionally which can also cause unexpected behavior in your programs.
+    > why? 根据eslint文档，一元加号和减号语句受自动分号插入的影响，会在应用中造成无声错误。使用类似`num += 1`来代替 `num++` or `num ++`也可以更好的表达含义。不允许使用一元加号，减号同样可以防止你无意中改变了你的变量值，这可能会造成预期之外的表现。
 
     ```javascript
     // bad
@@ -1840,7 +1846,8 @@
     ```
 
 <a name="variables--linebreak"></a>
-  - [13.7](#variables--linebreak) Avoid linebreaks before or after `=` in an assignment. If your assignment violates [`max-len`](https://eslint.org/docs/rules/max-len.html), surround the value in parens. eslint [`operator-linebreak`](https://eslint.org/docs/rules/operator-linebreak.html).
+  - [13.7](#variables--linebreak) Avoid linebreaks before or after `=` in an assignment. If your assignment violates [`max-len`](https://eslint.org/docs/rules/max-len.html), surround the value in parens. eslint [`operator-linebreak`](https://eslint.org/docs/rules/operator-linebreak.html).、
+  	避免在赋值语句中`=`前后换行。实在长度超出了，请用括号将其包裹起来
 
     > Why? Linebreaks surrounding `=` can obfuscate the value of an assignment.
 
@@ -1864,8 +1871,10 @@
 
 <a name="variables--no-unused-vars"></a>
   - [13.8](#variables--no-unused-vars) Disallow unused variables. eslint: [`no-unused-vars`](https://eslint.org/docs/rules/no-unused-vars)
+  	不允许未被使用的变量
 
     > Why? Variables that are declared and not used anywhere in the code are most likely an error due to incomplete refactoring. Such variables take up space in the code and can lead to confusion by readers.
+    > why? 代码中有定义了而未被使用变量很可能是由于不完整的重构而导致的错误。这些变量不仅占用空间，还会对读者造成困惑。
 
     ```javascript
     // bad
