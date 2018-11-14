@@ -2993,6 +2993,7 @@
 
   <a name="commas--leading-trailing"></a><a name="19.1"></a>
   - [20.1](#commas--leading-trailing) Leading commas: **Nope.** eslint: [`comma-style`](https://eslint.org/docs/rules/comma-style.html)
+	不要把逗号写在行首
 
     ```javascript
     // bad
@@ -3028,8 +3029,10 @@
 
   <a name="commas--dangling"></a><a name="19.2"></a>
   - [20.2](#commas--dangling) Additional trailing comma: **Yup.** eslint: [`comma-dangle`](https://eslint.org/docs/rules/comma-dangle.html)
+	在尾部添加一个额外的逗号
 
     > Why? This leads to cleaner git diffs. Also, transpilers like Babel will remove the additional trailing comma in the transpiled code which means you don’t have to worry about the [trailing comma problem](https://github.com/airbnb/javascript/blob/es5-deprecated/es5/README.md#commas) in legacy browsers.
+    > why？这可以是git diff更加的清晰。此外，像babel这样的预处理器会讲多余的逗号去除掉，所以不用担心老版本浏览器的解析问题
 
     ```diff
     // bad - git diff without trailing comma
@@ -3130,6 +3133,7 @@
   - [21.1](#semicolons--required) **Yup.** eslint: [`semi`](https://eslint.org/docs/rules/semi.html)
 
     > Why? When JavaScript encounters a line break without a semicolon, it uses a set of rules called [Automatic Semicolon Insertion](https://tc39.github.io/ecma262/#sec-automatic-semicolon-insertion) to determine whether or not it should regard that line break as the end of a statement, and (as the name implies) place a semicolon into your code before the line break if it thinks so. ASI contains a few eccentric behaviors, though, and your code will break if JavaScript misinterprets your line break. These rules will become more complicated as new features become a part of JavaScript. Explicitly terminating your statements and configuring your linter to catch missing semicolons will help prevent you from encountering issues.
+    > why? 当 JavaScript 遇见一个没有分号的换行符时，它会使用一个叫做 Automatic Semicolon Insertion 的规则来确定是否应该以换行符视为语句的结束，并且如果认为如此，会在代码中断前插入一个分号到代码中。 但是，ASI 包含了一些奇怪的行为，如果 JavaScript 错误的解释了你的换行符，你的代码将会中断。 随着新特性成为 JavaScript 的一部分，这些规则将变得更加复杂。 明确地终止你的语句，并配置你的 linter 以捕获缺少的分号将有助于防止你遇到的问题。
 
     ```javascript
     // bad - raises exception
@@ -3174,11 +3178,12 @@
 
 **[⬆ back to top](#table-of-contents)**
 
-## Type Casting & Coercion
+## Type Casting & Coercion (类型转换和强制类型转换)
 
   <a name="coercion--explicit"></a><a name="21.1"></a>
   - [22.1](#coercion--explicit) Perform type coercion at the beginning of the statement.
-
+	在语句的开始部分进行类型转换
+	
   <a name="coercion--strings"></a><a name="21.2"></a>
   - [22.2](#coercion--strings)  Strings: eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
 
@@ -3200,6 +3205,7 @@
 
   <a name="coercion--numbers"></a><a name="21.3"></a>
   - [22.3](#coercion--numbers) Numbers: Use `Number` for type casting and `parseInt` always with a radix for parsing strings. eslint: [`radix`](https://eslint.org/docs/rules/radix) [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
+  	使用Number进行类型转换，转化字符串的时候用带基数的parseInt
 
     ```javascript
     const inputValue = '4';
@@ -3225,6 +3231,7 @@
 
   <a name="coercion--comment-deviations"></a><a name="21.4"></a>
   - [22.4](#coercion--comment-deviations) If for whatever reason you are doing something wild and `parseInt` is your bottleneck and need to use Bitshift for [performance reasons](https://jsperf.com/coercion-vs-casting/3), leave a comment explaining why and what you’re doing.
+	如果你一定要使用这种bitshift，请留下注释，你为什么要这么做。
 
     ```javascript
     // good
