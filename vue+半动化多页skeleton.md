@@ -83,7 +83,9 @@ plugins: [
 	}),
 ]
 ```
-这里有一项minify的配置为移除注释，笔者觉得很有可能是这个配置，移除了index.html中的<!-- shell -->给移除了，导致打包后未能生效。
+这里有一项minify的配置为移除注释，查看minify的[文档](https://github.com/kangax/html-minifier#options-quick-reference)
+![](http://pi82b6lei.bkt.clouddn.com/skeleton11-15-4.png)
+笔者觉得很有可能是这个配置，移除了index.html中的<!-- shell -->给移除了，导致打包后未能生效。
 在注释掉这一选项后，dev和prod环境均正常
 
 以下为原内容
