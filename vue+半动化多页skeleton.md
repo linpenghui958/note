@@ -1,6 +1,9 @@
 ###基于vue-cli实现自动生成Skeleton Page，多页skeleton
 ---
 11月15号更新：
+简单粗暴，先上 最新demo地址（有帮助的同学可以点个赞，或者给个star _(:з」∠)_ ）
+[vue-skeleton demo](https://github.com/linpenghui958/skeleton-test)
+
 文章发布过去半年时间，文章中所提的两个插件都已经进行较大的更新，有朋友跟我咨询后续插件的支持情况。这里我再以page-skeleton-webpack-plugin(0.10.12)以下简称PSWP为例进行实验
 可以看到PSWP[文档](https://github.com/ElemeFE/page-skeleton-webpack-plugin/blob/master/docs/i18n/zh_cn.md)中已经更新了对多页自动生成，和多路由骨架屏的支持。
 下文还是以vue-cli为例
