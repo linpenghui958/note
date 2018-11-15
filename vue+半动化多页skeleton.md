@@ -1,5 +1,94 @@
 ###基于vue-cli实现自动生成Skeleton Page，多页skeleton
 ---
+11月15号更新：
+文章发布过去半年时间，文章中所提的两个插件都已经进行较大的更新，有朋友跟我咨询后续插件的支持情况。这里我再以page-skeleton-webpack-plugin(0.10.12)以下简称PSWP为例进行实验
+可以看到PSWP[文档](https://github.com/ElemeFE/page-skeleton-webpack-plugin/blob/master/docs/i18n/zh_cn.md)中已经更新了对多页自动生成，和多路由骨架屏的支持。
+下文还是以vue-cli为例
+第一步，新建一个项目，并安装相关依赖
+```
+	vue init webpack skeleton-test
+	cd skeleton-test
+	npm install
+	npm install --save-dev page-skeleton-webpack-plugin
+	npm install --save-dev html-webpack-plugin
+```
+
+第二步，然后在build/webpack.base.conf.js中
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { SkeletonPlugin } = require('page-skeleton-webpack-plugin')
+const path = require('path')
+const webpackConfig = {
+  entry: 'index.js',
+  output: {
+    path: __dirname + '/dist',
+    filename: 'index.bundle.js'
+  },
+  plugin: [
+    new HtmlWebpackPlugin({
+       // 本身的配置项
+    }),
+    new SkeletonPlugin({
+      pathname: path.resolve(__dirname, '../shell'), // customPath为来存储 shell 文件的地址
+      staticDir: path.resolve(__dirname, '../dist'), // 最好和 `output.path` 相同
+      routes: ['/', '/test'], // 将需要生成骨架屏的路由添加到数组中，测试根路径和/test路径
+    })
+  ]
+}
+```
+第三步，运行项目，生产skeleton-page
+- 还是在控制台输入toggleBar后点击页面上方的control bar唤醒
+![](http://pi82b6lei.bkt.clouddn.com/111.png)
+右上角依次为，预览不同路由生产的骨架屏，手机预览，写入本地文件
+可以看到现在更新了许多功能，在预览无误后
+点击右上方写入本地文件即可进行最后的打包预览
+![](http://pi82b6lei.bkt.clouddn.com/222.png)
+可以看到项目目录多了一个shell路径，这跟之前设置的保存路径一致
+
+第四步，打包预览效果
+
+```js
+	npm run build
+	cd dist
+	http-server
+```
+![](http://pi82b6lei.bkt.clouddn.com/skeleton11-15-3.png)
+然后进入浏览器预览
+看一下根路径
+![](http://pi82b6lei.bkt.clouddn.com/screen12.gif)
+看一下/test路径
+![](http://pi82b6lei.bkt.clouddn.com/skeleton-screen13.gif)
+
+ps！！！前方高能预警
+这里是以vue-cli为基础进行的测试
+在初始化的模板中，webpack分为base、dev、 prod三个文件
+这里因为PSWP为dev和prod都需要的插件，所以放在base文件中
+但是在第一次打包后预览，笔者发现prod环境并没有生效
+原因是在webpack.prod.conf.js中的HtmlWebpackPlugin配置中
+```js
+plugins: [
+	new HtmlWebpackPlugin({
+	  filename: config.build.index,
+	  template: 'index.html',
+	  inject: true,
+	  minify: {
+	    // removeComments: true,  移除注释
+	    collapseWhitespace: true,
+	    removeAttributeQuotes: true
+	    // more options:
+	    // https://github.com/kangax/html-minifier#options-quick-reference
+	  },
+	  // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+	  chunksSortMode: 'dependency'
+	}),
+]
+```
+这里有一项minify的配置为移除注释，笔者觉得很有可能是这个配置，移除了index.html中的<!-- shell -->给移除了，导致打包后未能生效。
+在注释掉这一选项后，dev和prod环境均正常
+
+以下为原内容
+-----
+
 之前看eleme的专栏了解到骨架页面
 这里刚好项目重构尝试将Skeleton Page引入项目中
 其中遇到一些问题和一些坑，分享一下

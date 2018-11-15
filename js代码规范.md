@@ -3245,6 +3245,7 @@
 
   <a name="coercion--bitwise"></a><a name="21.5"></a>
   - [22.5](#coercion--bitwise) **Note:** Be careful when using bitshift operations. Numbers are represented as [64-bit values](https://es5.github.io/#x4.3.19), but bitshift operations always return a 32-bit integer ([source](https://es5.github.io/#x11.7)). Bitshift can lead to unexpected behavior for integer values larger than 32 bits. [Discussion](https://github.com/airbnb/javascript/issues/109). Largest signed 32-bit Int is 2,147,483,647:
+    注意：当你使用位运算的时候要小心。 数字总是被以 64-bit 值 的形式表示，但是位运算总是返回一个 32-bit 的整数 (来源)。 对于大于 32 位的整数值，位运算可能会导致意外行为。讨论。 最大的 32 位整数是： 2,147,483,647。
 
     ```javascript
     2147483647 >> 0; // => 2147483647
@@ -3270,7 +3271,7 @@
 
 **[⬆ back to top](#table-of-contents)**
 
-## Naming Conventions
+## Naming Conventions（命名规则）
 
   <a name="naming--descriptive"></a><a name="22.1"></a>
   - [23.1](#naming--descriptive) Avoid single letter names. Be descriptive with your naming. eslint: [`id-length`](https://eslint.org/docs/rules/id-length)
