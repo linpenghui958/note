@@ -1,6 +1,7 @@
 # Airbnb JavaScript Style Guide() {
 
 *A mostly reasonable approach to JavaScript*
+*一种写JavaScript更合理的代码风格。*
 
 > **Note**: this guide assumes you are using [Babel](https://babeljs.io), and requires that you use [babel-preset-airbnb](https://npmjs.com/babel-preset-airbnb) or the equivalent. It also assumes you are installing shims/polyfills in your app, with [airbnb-browser-shims](https://npmjs.com/airbnb-browser-shims) or the equivalent.
 > **注意**：本指南假定你正在使用[Babel](https://babeljs.io)并要求你使用[babel-preset-airbnb](https://npmjs.com/babel-preset-airbnb)或者其他相同的资源。并且假定你在你的应用中安装了shims/polyfills，使用[airbnb-browser-shims](https://npmjs.com/airbnb-browser-shims)或相同的功能
@@ -3353,6 +3354,7 @@
 
   <a name="naming--self-this"></a><a name="22.5"></a>
   - [23.5](#naming--self-this) Don’t save references to `this`. Use arrow functions or [Function#bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
+  	不要保存`this`的引用
 
     ```javascript
     // bad
@@ -3381,6 +3383,7 @@
 
   <a name="naming--filename-matches-export"></a><a name="22.6"></a>
   - [23.6](#naming--filename-matches-export) A base filename should exactly match the name of its default export.
+  	一个基本的文件名需要与其默认导出的名称完全匹配。
 
     ```javascript
     // file 1 contents
@@ -3417,6 +3420,7 @@
 
   <a name="naming--camelCase-default-export"></a><a name="22.7"></a>
   - [23.7](#naming--camelCase-default-export) Use camelCase when you export-default a function. Your filename should be identical to your function’s name.
+  	当你导出一个默认函数时使用驼峰的方式。你的文件名应该和你的函数名一致。
 
     ```javascript
     function makeStyleGuide() {
@@ -3428,6 +3432,7 @@
 
   <a name="naming--PascalCase-singleton"></a><a name="22.8"></a>
   - [23.8](#naming--PascalCase-singleton) Use PascalCase when you export a constructor / class / singleton / function library / bare object.
+  	何时使用帕斯卡命名，当你导出构造器，类，单例，函数库，空对象时。
 
     ```javascript
     const AirbnbStyleGuide = {
@@ -3440,8 +3445,10 @@
 
   <a name="naming--Acronyms-and-Initialisms"></a>
   - [23.9](#naming--Acronyms-and-Initialisms) Acronyms and initialisms should always be all capitalized, or all lowercased.
+  	首字母缩写的词应该都为大写或者都为小写
 
     > Why? Names are for readability, not to appease a computer algorithm.
+    > why? 名字是为了可读性，不是为了满足计算机的算法。
 
     ```javascript
     // bad
@@ -3476,10 +3483,14 @@
 
   <a name="naming--uppercase"></a>
   - [23.10](#naming--uppercase) You may optionally uppercase a constant only if it (1) is exported, (2) is a `const` (it can not be reassigned), and (3) the programmer can trust it (and its nested properties) to never change.
+  	只有一个常量（1）被导出，（2）不能被修改，（3）程序员可以信任它不会被改变时，才可以使用大写字母表示。
 
     > Why? This is an additional tool to assist in situations where the programmer would be unsure if a variable might ever change. UPPERCASE_VARIABLES are letting the programmer know that they can trust the variable (and its properties) not to change.
+    > why? 当时程序员不确定这个变量是否会被改变时，这是一种辅助工具帮助判断。
     - What about all `const` variables? - This is unnecessary, so uppercasing should not be used for constants within a file. It should be used for exported constants however.
+    - 是否需要用于所有的常量变量？ 这是不必须要的，在一个文件内命名行常量时不需要，但是当作为一个导出常量时需要。
     - What about exported objects? - Uppercase at the top level of export  (e.g. `EXPORTED_OBJECT.key`) and maintain that all nested properties do not change.
+    - 导出的对象是否需要？在导出的顶层使用，并保持所有的嵌套属性不变的情况下。
 
     ```javascript
     // bad
@@ -3514,13 +3525,15 @@
 
 **[⬆ back to top](#table-of-contents)**
 
-## Accessors
+## Accessors （存储器）
 
   <a name="accessors--not-required"></a><a name="23.1"></a>
   - [24.1](#accessors--not-required) Accessor functions for properties are not required.
+  	对属性的存储器是不被需要恶毒
 
   <a name="accessors--no-getters-setters"></a><a name="23.2"></a>
   - [24.2](#accessors--no-getters-setters) Do not use JavaScript getters/setters as they cause unexpected side effects and are harder to test, maintain, and reason about. Instead, if you do make accessor functions, use `getVal()` and `setVal('hello')`.
+  	不要使用 JavaScript 的 getters/setters 方法，因为它们会导致意外的副作用，并且更加难以测试、维护和推敲。 相应的，如果你需要存取函数的时候使用 getVal() 和 setVal('hello')。
 
     ```javascript
     // bad
@@ -3548,6 +3561,7 @@
 
   <a name="accessors--boolean-prefix"></a><a name="23.3"></a>
   - [24.3](#accessors--boolean-prefix) If the property/method is a `boolean`, use `isVal()` or `hasVal()`.
+  	如果属性名或方法返回的是布尔值，使用`isVal()` or `hasVal()`.
 
     ```javascript
     // bad
@@ -3563,6 +3577,7 @@
 
   <a name="accessors--consistent"></a><a name="23.4"></a>
   - [24.4](#accessors--consistent) It’s okay to create `get()` and `set()` functions, but be consistent.
+  如果要创建get()和set()函数，请保持一致性
 
     ```javascript
     class Jedi {
@@ -3583,10 +3598,11 @@
 
 **[⬆ back to top](#table-of-contents)**
 
-## Events
+## Events （事件）
 
   <a name="events--hash"></a><a name="24.1"></a>
   - [25.1](#events--hash) When attaching data payloads to events (whether DOM events or something more proprietary like Backbone events), pass an object literal (also known as a "hash")  instead of a raw value. This allows a subsequent contributor to add more data to the event payload without finding and updating every handler for the event. For example, instead of:
+  	当给事件附加数据时（无论是DOM事件还是更加私有的事件，传递一个对象而不是原始值。这样可以让后续的开发者更有效给这个事件添加数据，而不需要找到并更新这个事件的所有事件。
 
     ```javascript
     // bad
@@ -3618,6 +3634,7 @@
 
   <a name="jquery--dollar-prefix"></a><a name="25.1"></a>
   - [26.1](#jquery--dollar-prefix) Prefix jQuery object variables with a `$`.
+  	在JQuery对象的声明加上`$`的前缀
 
     ```javascript
     // bad
@@ -3632,6 +3649,7 @@
 
   <a name="jquery--cache"></a><a name="25.2"></a>
   - [26.2](#jquery--cache) Cache jQuery lookups.
+  	缓存JQuery的查询对象。
 
     ```javascript
     // bad
@@ -3660,9 +3678,11 @@
 
   <a name="jquery--queries"></a><a name="25.3"></a>
   - [26.3](#jquery--queries) For DOM queries use Cascading `$('.sidebar ul')` or parent > child `$('.sidebar > ul')`. [jsPerf](http://jsperf.com/jquery-find-vs-context-sel/16)
+  在DOM查询中使用串联的查询方式`$('.sidebar ul')`或者父 > 子`$('.sidebar > ul')`
 
   <a name="jquery--find"></a><a name="25.4"></a>
   - [26.4](#jquery--find) Use `find` with scoped jQuery object queries.
+  	基于JQuery的对象作用域使用find方法
 
     ```javascript
     // bad
@@ -3687,6 +3707,7 @@
 
   <a name="es5-compat--kangax"></a><a name="26.1"></a>
   - [27.1](#es5-compat--kangax) Refer to [Kangax](https://twitter.com/kangax/)’s ES5 [compatibility table](https://kangax.github.io/es5-compat-table/).
+  - ECMAScript5的兼容性参考以上链接
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -3695,40 +3716,46 @@
 
   <a name="es6-styles"></a><a name="27.1"></a>
   - [28.1](#es6-styles) This is a collection of links to the various ES6+ features.
+  - 这是一个链接ES6+特性的合集
 
-1. [Arrow Functions](#arrow-functions)
-1. [Classes](#classes--constructors)
-1. [Object Shorthand](#es6-object-shorthand)
-1. [Object Concise](#es6-object-concise)
-1. [Object Computed Properties](#es6-computed-properties)
-1. [Template Strings](#es6-template-literals)
-1. [Destructuring](#destructuring)
-1. [Default Parameters](#es6-default-parameters)
-1. [Rest](#es6-rest)
-1. [Array Spreads](#es6-array-spreads)
-1. [Let and Const](#references)
-1. [Exponentiation Operator](#es2016-properties--exponentiation-operator)
-1. [Iterators and Generators](#iterators-and-generators)
-1. [Modules](#modules)
+1. [Arrow Functions](#arrow-functions)箭头函数
+1. [Classes](#classes--constructors)类
+1. [Object Shorthand](#es6-object-shorthand)对象简写
+1. [Object Concise](#es6-object-concise)对象简洁
+1. [Object Computed Properties](#es6-computed-properties)对象计算属性
+1. [Template Strings](#es6-template-literals)模版字符串
+1. [Destructuring](#destructuring)解构
+1. [Default Parameters](#es6-default-parameters)默认参数
+1. [Rest](#es6-rest)rest运算符
+1. [Array Spreads](#es6-array-spreads)数组扩展
+1. [Let and Const](#references)let和const
+1. [Exponentiation Operator](#es2016-properties--exponentiation-operator)取幂运算符
+1. [Iterators and Generators](#iterators-and-generators)迭代器和生成器
+1. [Modules](#modules)模块
 
   <a name="tc39-proposals"></a>
   - [28.2](#tc39-proposals) Do not use [TC39 proposals](https://github.com/tc39/proposals) that have not reached stage 3.
+  	不要使用尚未达到第3阶段的 TC39 建议。
 
     > Why? [They are not finalized](https://tc39.github.io/process-document/), and they are subject to change or to be withdrawn entirely. We want to use JavaScript, and proposals are not JavaScript yet.
 
 **[⬆ back to top](#table-of-contents)**
 
-## Standard Library
+## Standard Library （标准库）
 
   The [Standard Library](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects)
   contains utilities that are functionally broken but remain for legacy reasons.
+  标准库包含的一些实用方法在功能上有缺陷，但是由于历史遗留原因仍然存在。
 
   <a name="standard-library--isnan"></a>
   - [29.1](#standard-library--isnan) Use `Number.isNaN` instead of global `isNaN`.
     eslint: [`no-restricted-globals`](https://eslint.org/docs/rules/no-restricted-globals)
+    使用Number.isNan来代替全局的isNaN
 
     > Why? The global `isNaN` coerces non-numbers to numbers, returning true for anything that coerces to NaN.
+    > why? 全局的isNaN强制转换非数字类型的为数组类型，对任何强制转换为NaN的东西都返回true
     > If this behavior is desired, make it explicit.
+    >如果你需要这种行为，请注明
 
     ```javascript
     // bad
@@ -3745,7 +3772,9 @@
     eslint: [`no-restricted-globals`](https://eslint.org/docs/rules/no-restricted-globals)
 
     > Why? The global `isFinite` coerces non-numbers to numbers, returning true for anything that coerces to a finite number.
+    > why? 全局的 isFinite 强制非数字转化为数字，对任何强制转化为有限数字的东西都返回 true。
     > If this behavior is desired, make it explicit.
+    > 如使用请注明。
 
     ```javascript
     // bad
@@ -3758,7 +3787,7 @@
 
 **[⬆ back to top](#table-of-contents)**
 
-## Testing
+## Testing （测试）
 
   <a name="testing--yup"></a><a name="28.1"></a>
   - [30.1](#testing--yup) **Yup.**
@@ -3771,16 +3800,17 @@
 
   <a name="testing--for-real"></a><a name="28.2"></a>
   - [30.2](#testing--for-real) **No, but seriously**:
-    - Whichever testing framework you use, you should be writing tests!
-    - Strive to write many small pure functions, and minimize where mutations occur.
-    - Be cautious about stubs and mocks - they can make your tests more brittle.
-    - We primarily use [`mocha`](https://www.npmjs.com/package/mocha) and [`jest`](https://www.npmjs.com/package/jest) at Airbnb. [`tape`](https://www.npmjs.com/package/tape) is also used occasionally for small, separate modules.
-    - 100% test coverage is a good goal to strive for, even if it’s not always practical to reach it.
-    - Whenever you fix a bug, _write a regression test_. A bug fixed without a regression test is almost certainly going to break again in the future.
+  - 没有，但是认真的
+    - Whichever testing framework you use, you should be writing tests! 无论你使用哪种测试框架，你都需要编写测试
+    - Strive to write many small pure functions, and minimize where mutations occur. 努力编写尽量小尽量纯净的函数，并减少发生突变的地方。
+    - Be cautious about stubs and mocks - they can make your tests more brittle. 对于静态方法和mock需要小心，它会使你的测试变弱。
+    - We primarily use [`mocha`](https://www.npmjs.com/package/mocha) and [`jest`](https://www.npmjs.com/package/jest) at Airbnb. [`tape`](https://www.npmjs.com/package/tape) is also used occasionally for small, separate modules.我们在airbnb使用mocha和jest。tape也偶尔被运用在一些小的，分离开的模块。
+    - 100% test coverage is a good goal to strive for, even if it’s not always practical to reach it. 100%的测试覆盖率是一个值得努力的目标，即使它并不是很好达到。
+    - Whenever you fix a bug, _write a regression test_. A bug fixed without a regression test is almost certainly going to break again in the future.无论何时修复bug，都要编写一个回归测试。在没有回归测试的情况下修复的bug在将来几乎肯定会再次崩溃。
 
 **[⬆ back to top](#table-of-contents)**
 
-## Performance
+## Performance （性能）
 
   - [On Layout & Web Performance](https://www.kellegous.com/j/2013/01/26/layout-performance/)
   - [String vs Array Concat](https://jsperf.com/string-vs-array-concat/2)
@@ -3794,7 +3824,7 @@
 
 **[⬆ back to top](#table-of-contents)**
 
-## Resources
+## Resources （资源）
 
 **Learning ES6+**
 
