@@ -333,7 +333,7 @@
 
   <a name="arrays--literals"></a><a name="4.1"></a>
   - [4.1](#arrays--literals) Use the literal syntax for array creation. eslint: [`no-array-constructor`](https://eslint.org/docs/rules/no-array-constructor.html)
-	使用字面亮去声明一个数组
+	使用字面量去声明一个数组
 	
     ```javascript
     // bad
@@ -4044,7 +4044,7 @@
 
 (The MIT License)
 
-Copyright (c) 2012 Airbnb
+Copyright (c) 2018 linxiaohui
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
