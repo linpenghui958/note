@@ -2,8 +2,8 @@
 我只是知识的搬运工~
 
 [原文外网地址](https://dev.to/bmz1/generating-pdf-from-html-with-nodejs-and-puppeteer-5ln#clientside)  
-[Markdown文件地址]()  
-[demo-code地址(文章中所有代码合集)]()  
+[Markdown文件地址](https://github.com/linpenghui958/note/blob/master/%E4%BD%BF%E7%94%A8Nodejs%E5%92%8CPuppeteer%E4%BB%8EHTML%E4%B8%AD%E5%AF%BC%E5%87%BAPDF.md)  
+[demo-code地址(文章中所有代码合集)](https://github.com/linpenghui958/pdf-download-demo)  
 **在这篇文章里，我将会向你展示如何使用Nodejs、Puppeteer、无头浏览器、Docker从一个样式要求复杂的的React页面导出PDF**
 
 背景：几个月前，一个RisingStack的客服要求我们实现一个用户可以以PDF格式请求React页面的功能。这个页面主要是含有数据可视化、很多SVG的报告/结å果。此外，还有一些改变布局和修改一些HTML元素样式的特殊需求。因此，这个PDF相对于原始React页面，需要有一些不同的样式和添加。
