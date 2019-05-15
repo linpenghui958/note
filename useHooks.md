@@ -1,11 +1,11 @@
-## useHooks
+## useHooks - 一期
 #### 简介
 
-Hooks是React 16.8新增的一项特性，可以让你在不用class的情况下去使用state和React的其他功能。这篇文章提供了简单易懂的案例，帮助你去了解hooks如何使用，并且鼓励你在接下来的项目中去使用它。再次之前，请确保你已经看了[官方文档](https://reactjs.org/docs/hooks-intro.html)
+Hooks是React 16.8新增的一项特性，可以让你在不使用class的情况下去使用state和React的其他功能。这篇文章提供了简单易懂的案例，帮助你去了解hooks如何使用，并且鼓励你在接下来的项目中去使用它。但是在此之前，请确保你已经看了[hook的官方文档](https://reactjs.org/docs/hooks-intro.html)
 
 #### useEventListener
 
-如果你发现自己使用`useEffect`添加了许多事件监听，那你可能需要考虑将这些逻辑封装成一个通用的hook。在下面的使用窍门里，我们创建了一个叫`useEventListener`的hook，这个hook会检查`addEventListener`是否被支持、添加事件监听并且在cleanup钩子中清空。你可以在[CodeSandbox demo](https://codesandbox.io/s/z64on3ypm)上查看动态实例。
+如果你发现自己使用`useEffect`添加了许多事件监听，那你可能需要考虑将这些逻辑封装成一个通用的hook。在下面的使用窍门里，我们创建了一个叫`useEventListener`的hook，这个hook会检查`addEventListener`是否被支持、添加事件监听并且在cleanup钩子中清空监听。你可以在[CodeSandbox demo](https://codesandbox.io/s/z64on3ypm)上查看在线实例。
 
 ```javascript
 import { useRef, useEffect, useCallback } from 'react';
@@ -50,7 +50,7 @@ function useEventListener(eventName, handler, element = global){
 
   useEffect(
     () => {
-      // 确保当前的元素支持addEventListener
+      // 确认是否支持addEventListener
       const isSupported = element && element.addEventListener;
       if (!isSupported) return;
       
@@ -74,7 +74,7 @@ function useEventListener(eventName, handler, element = global){
 
 #### useWhyDidYouUpdate
 
-这个hook让你更加容易观察到是哪一个prop的改变造成了一个组件的重新渲染。如果一个函数运行一次的成本非常的高，并且你也知道它会因为哪些prop造成重复的渲染，你可以使用**React.memo**这个高阶组件来解决这个问题，在接下来有一个**Counter**的组件将会使用这个特性。在这个案例中，如果你还在寻找一些看起来不必要的重新渲染，你可以使用**useWhyDidYouUpdate**这个hook，并且在你的控制台查看哪一个props在这次渲染中发生了改变和他们改变前后的值。Pretty nifty huh?
+这个hook让你更加容易观察到是哪一个prop的改变导致了一个组件的重新渲染。如果一个函数运行一次的成本非常的高，并且你也知道它会因为哪些prop造成重复的渲染，你可以使用**React.memo**这个高阶组件来解决这个问题，在接下来有一个**Counter**的组件将会使用这个特性。在这个案例中，如果你还在寻找一些看起来不必要的重新渲染，你可以使用**useWhyDidYouUpdate**这个hook，并且在你的控制台查看哪一个prop在这次渲染中发生了改变和它改变前后的值。Pretty nifty huh?
 你可以在这里查看在线实例。[CodeSandbox demo](https://codesandbox.io/s/kx83n7201o)
 
 ```javascript
@@ -82,7 +82,7 @@ import { useState, useEffect, useRef } from 'react';
 
 // 让我们装作这个<Counter>组件的重新渲染成本很高...
 // ... 我们使用React.memo将它包裹起来，但是我们仍然需要寻找性能问题 :/
-// 因此我们
+// 因此我们添加useWhyDidYouUpdate并在控制台查看将会发生什么
 const Counter = React.memo(props => {
   useWhyDidYouUpdate('Counter', props);
   return <div style={props.style}>{props.count}</div>;
@@ -152,7 +152,7 @@ function useWhyDidYouUpdate(name, props) {
 
 #### useDarkMode
 这个hook包含了，当你需要在你的网站添加一个黑暗模式的所有状态逻辑。它利用localStorage去记住用户选择的模式、默认浏览器或者系统级别设置使用`prefers-color-schema`媒体查询和管理`.dark-mode`的类名去在body上应用你自己的样式。
-这篇文章同样帮助了解将hook组合起来的威力。将state中的状态同步到localStorage中使用的死`useLocalStorage`hook。检测用户的黑暗模式偏好使用的`useMeida`hook。这两个hook都是我们在其他案例中创建的，但是这里我们将它们组合起来，使用相当少的行数创建一个非常有用的hook。It's almost as if hooks bring the compositional power of React components to stateful logic! 🤯
+这篇文章同样能帮助你了解将hook组合起来的威力。将state中的状态同步到localStorage中使用的是`useLocalStorage`hook。检测用户的黑暗模式偏好使用的`useMeida`hook。这两个hook都是我们在其他案例中创建的，但是这里我们将它们组合起来，使用相当少的行数创建一个非常有用的hook。It's almost as if hooks bring the compositional power of React components to stateful logic! 🤯
 
 ```javascript
 // Usage
@@ -211,10 +211,10 @@ function usePrefersDarkMode() {
 
 ```
 
-> [donavon/use-dark-mode](https://github.com/donavon/use-dark-mode) - 一个更可配置的这个钩子的实现，并且同步了不同浏览器tab和处理的SSR情况。为这篇文章提供了很多代码和灵感。
+> [donavon/use-dark-mode](https://github.com/donavon/use-dark-mode) - 这个钩子一个更可配置的的实现，并且同步了不同浏览器tab和处理的SSR情况。为这篇文章提供了很多代码和灵感。
 
 #### useMedia
-这个hook让你非常简单的可以在你的component逻辑里使用媒体查询。在我们的例子中，我们可以根据哪一个媒体查询匹配到了当前屏幕的宽度，并渲染不同的列数。然后分配图片在列中不同的位置以限制列的高度差（我们并不像一列比剩下的都要长）。
+这个hook让你轻易可以在你的component逻辑里使用媒体查询。在我们的例子中，我们可以根据哪一个媒体查询匹配到了当前屏幕的宽度，并渲染不同的列数。然后分配图片在列中不同的位置以限制列的高度差（我们并不像希望某一列比剩下的都要长）。
 你可以创建一个直接获取屏幕宽度的hook，代替使用媒体查询。但是这个方法会让你更容易在JS和你的Stylesheet共享媒体查询。这里查看[在线示例](https://codesandbox.io/s/6jlmpjq9vw)。
 
 ```javascript
@@ -282,7 +282,7 @@ function useMedia(queries, values, defaultValue) {
     return typeof values[index] !== 'undefined' ? values[index] : defaultValue;
   };
 
-  // 匹配值得state和setter
+  // 匹配值的state和setter
   const [value, setValue] = useState(getValue);
 
   useEffect(
@@ -308,7 +308,7 @@ function useMedia(queries, values, defaultValue) {
 
 #### useLockBodyScroll
 
-有时候当一些特别的组件在你们的页面中展示时，你想要组织用户可以滑动你的页面（想一想modal框或者移动端的全屏菜单）。如果你看到modal框下的内容滚动尤其是当你打算滚动modal框内的内容时，这可能会让人很困惑。这个hook解决了这个问题。在任意组件内使用这个hook，只有当然这个组件unmount的时候，页面才会被解锁滑动。[在线实例](https://codesandbox.io/s/yvkol51m81)
+有时候当一些特别的组件在你们的页面中展示时，你想要阻止用户滑动你的页面（想一想modal框或者移动端的全屏菜单）。如果你看到modal框下的内容滚动尤其是当你打算滚动modal框内的内容时，这可能会让人很困惑。这个hook解决了这个问题。在任意组件内使用这个hook，只有当然这个组件unmount的时候，页面才会被解锁滑动。[在线实例](https://codesandbox.io/s/yvkol51m81)
 
 ```javascript
 import { useState, useLayoutEffect } from 'react';
@@ -356,11 +356,11 @@ function useLockBodyScroll() {
    document.body.style.overflow = 'hidden';
    // 当组件unmount的时候解锁滚动
    return () => document.body.style.overflow = originalStyle;
-   }, []); // Empty array ensures effect is only run on mount and unmount
+   }, []); // 空数组保证了effect函数只会在mount和unmount的时候运行
 }
 ```
 
-> [How hooks might shape desgin systems built in React](https://jeremenichelli.io/2019/01/how-hooks-might-shape-design-systems-built-in-react/) - 非常棒的文章启发了这个小方法。他们版本的useLockBodyScroll hook接手一个切换参数从而对锁定状态提供更多控制。
+> [How hooks might shape desgin systems built in React](https://jeremenichelli.io/2019/01/how-hooks-might-shape-design-systems-built-in-react/) - 一篇非常棒，启发了这个小方法的文章。他们版本的useLockBodyScroll hook接受一个切换参数从而对锁定状态提供更多控制。
 
 #### useTheme
 这个hook帮助你简单使用CSS变量动态的改变你的app的表现。你只需要简单的在你文档的根元素传递一个，你想用来更新并且hook更新的每一个变量包含键值对的CSS变量。这在你无法使用行内样式（没有伪类支持）以及在你们的主题样式里有太多方式排列（例如一个可以让用户定制他们的外观形象的app应用）的情况下很有用。值得注意的是，许多css-in-js的库支持动态的样式，但是尝试一下仅仅使用CSS变量和一个React hook来完成会是非常有趣的。下面的例子非常简单，但是你可以想象一下主题对象是被存储在state中或者从接口获取的。一定要看看这个有趣的[在线实例](https://codesandbox.io/s/15mko9187)。
@@ -395,13 +395,13 @@ function App() {
 function useTheme(theme) {
   useLayoutEffect(
     () => {
-      // Iterate through each value in theme object
+      // 循环这个主题对象
       for (const key in theme) {
-        // Update css variables in document's root element
+        // 更新文档根元素的css变量
         document.documentElement.style.setProperty(`--${key}`, theme[key]);
       }
     },
-    [theme] // Only call again if theme object reference changes
+    [theme] // 只要当主题对象发行改变时才会再次运行
   );
 }
 ```
@@ -409,7 +409,7 @@ function useTheme(theme) {
 > [CSS Variables and React](https://medium.com/geckoboard-under-the-hood/how-we-made-our-product-more-personalized-with-css-variables-and-react-b29298fde608) -  一篇激发了这个小方法的博文，来自Dan Bahrami。
 
 #### useSpring
-这个hook是react-spring的一部分，react-spring是一个可以让你使用高性能物理动画的库。我试图在这里避免引入依赖关系，但是这一次为了暴露这个非常有用的库，我要破例做一次。react-spring的优点之一就是允许你完全的跳过React render的生命周期当你使用动画时。这样经常可以得到客观的性能提升。在接下来的例子中，我们将渲染一行卡片并且根据鼠标移过每一个卡片的位置应用spring动画效果。为了实现这个效果，我们使用由一租想要变换的值组成的数组来调用useSpring hook。渲染一个动画组件（由react-spring导出），用onMouseMove事件获取鼠标的位置。然后调用setAnimationProps（hook返回的函数）去更新。你可以阅读下面的代码的注释，或者直接查看[在线实例](https://codesandbox.io/s/6jlvz1j5q3)
+这个hook是react-spring的一部分，react-spring是一个可以让你使用高性能物理动画的库。我试图在这里避免引入依赖关系，但是这一次为了暴露这个非常有用的库，我要破例做一次。react-spring的优点之一就是允许当你使用动画时完全的跳过React render的生命周期。这样经常可以得到客观的性能提升。在接下来的例子中，我们将渲染一行卡片并且根据鼠标移过每一个卡片的位置应用spring动画效果。为了实现这个效果，我们使用由一组将要变换的值组成的数组来调用useSpring hook。渲染一个动画组件（由react-spring导出），用onMouseMove事件获取鼠标的位置。然后调用setAnimationProps（hook返回的函数）去更新。你可以阅读下面的代码的注释，或者直接查看[在线实例](https://codesandbox.io/s/6jlvz1j5q3)
 
 ```javascript
 import { useState, useRef } from 'react';
@@ -503,7 +503,7 @@ function Card({ children }) {
 
 #### useHistory
 
-这个hook可以非常简单的讲撤销/重做功能添加到你的应用中。我们的案例是一个简单的绘画应用。这个例子将会生成一个网格块，你可以单击任何一个块去改变它的颜色，并且通过使用useHistory hook，我们可以在canvas上撤销、重做或者清除所有的更改。[在线示例](https://codesandbox.io/s/32rqn6zq0p)。在我们的hook中，我们将使用useRoducer来代替useState储存数据，这些东西应该对任何使用过redux的人都非常的熟悉（查看更多useReducer相关信息尽在[官方文档](https://reactjs.org/docs/hooks-reference.html#usereducer)）。这个hook复制了[use-undo](https://github.com/xxhomey19/use-undo)这个库并有一些细微的变化。因此你可以直接通过npm去安装和使用这个库。
+这个hook可以非常简单的将撤销/重做功能添加到你的应用中。我们的案例是一个简单的绘画应用。这个例子将会生成一个网格块，你可以单击任何一个块去改变它的颜色，并且通过使用useHistory hook，我们可以在canvas上撤销、重做或者清除所有的更改。[在线示例](https://codesandbox.io/s/32rqn6zq0p)。在我们的hook中，我们将使用useRoducer来代替useState储存数据，这些东西应该对任何使用过redux的人都非常的熟悉（查看更多useReducer相关信息尽在[官方文档](https://reactjs.org/docs/hooks-reference.html#usereducer)）。这个hook复制了[use-undo](https://github.com/xxhomey19/use-undo)这个库并有一些细微的变化。因此你可以直接通过npm去安装和使用这个库。
 
 ```javascript
 import { useReducer, useCallback } from 'react';
@@ -534,7 +534,7 @@ function App() {
               <div
                 // 如果state中的状态为true则给这个块添加active类名
                 className={'block' + (state[index] ? ' active' : '')}
-                // 根据点击改变块的状态并merge到最新的state
+                // 根据点击改变块的状态并合并到最新的state
                 onClick={() => set({ ...state, [index]: !state[index] })}
                 key={i}
               />
@@ -743,7 +743,7 @@ function useScript(src) {
 > [useScript from palmerhq/the-platform](https://github.com/palmerhq/the-platform#usescript) - 类似的hook，但是使用了React Suspense来返回一个promise
 
 #### useKeyPress
-使用这个hook可以轻易的监测当用户在他们的键盘上输入特殊的键值时。这个小窍门非常的简单，并且我想给你们看这只需要很少的代码，但我挑战任何读者看谁能创建一个更高级的版本。监测当多个键同时被按住会是一个很好的补充。加分项：还能检测是否在一个指定顺序输入键值。
+使用这个hook可以轻易的监测当用户在他们的键盘上输入特殊的键值时。这个小窍门非常的简单，并且我想给你们看这只需要很少的代码，但我挑战任何读者看谁能创建一个更高级的版本。监测当多个键同时被按住会是一个很好的补充。加分项：还能检测是否在按照指定顺序输入键值。
 
 ```javascript
 
