@@ -101,3 +101,102 @@ flutter pub run pigeon --input pigeons/pigeonDemoMessage.dart
 - `--input`为我们创建的目标文件
 
 我们接下来看一下双端如何使用pigeon生成的模板文件。
+
+#### Android
+
+这里通过Pigeon生产的`PigeonDemoMessage.java`文件中，可以看到入参和出参的定义`DemoRequest、DemoReply`，而`PigeonDemoApi`接口，后面需要在plugin中继承PigeonDemoApi并实现对应的方法，其中setup函数用来注册对应方法所需的methodchannel。
+
+> ps: 这里生成的PigeonDemoApi部分，setup使用了接口中静态方法的默认实现，这里需要api level 24才能支持，这里需要注意一下。
+
+首先需要在plugin文件中引入生成的PigeonDemoMessage。
+FlutterPigeonDemoPlugin先要继承PigeonDemoApi。
+然后在onAttachedToEngine中进行PigeonDemoApi的setup注册。并在plugin中重写PigeonDemoApi中定义的getMessage方法
+
+伪代码部分
+
+```
+// ... 省略其他引入
+import com.example.flutter_pigeon_demo.PigeonDemoMessage.*
+
+// 继承PigeonDemoApi
+public class FlutterPigeonDemoPlugin: FlutterPlugin, MethodCallHandler, PigeonDemoApi {
+
+	//...
+	override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    	channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_pigeon_demo")
+    	channel.setMethodCallHandler(this);
+    	// pigeon生成的api进行初始化
+    	PigeonDemoApi.setup(flutterPluginBinding.binaryMessenger, this);
+  	}
+  	
+  	// 重写PigeonDemoApi中的getMessage方法
+	  override fun getMessage(arg: DemoRequest): DemoReply {
+	    	var reply = DemoReply();
+	    	reply.result = "pigeon demo result";
+	    	return reply;
+	}
+}
+
+```
+
+#### iOS
+ios相关目录下的`PigeonDemoMessage.m`也有`FLTDemoReply、FLTDemoRequest、FLTPigeonDemoApiSetup`的实现。
+首先需要在plugin中引入头文件`PigeonDemoMessage.h`，需要在registerWithRegistrar中注册setup函数，并重写getMessage方法。
+
+```
+#import "FlutterPigeonDemoPlugin.h"
+#import "PigeonDemoMessage.h"
+
+@implementation FlutterPigeonDemoPlugin
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+    FlutterPigeonDemoPlugin* instance = [[FlutterPigeonDemoPlugin alloc] init];
+    // 注册api
+    FLTPigeonDemoApiSetup(registrar.messenger, instance);
+}
+
+// 重写getMessage方法
+- (FLTDemoReply*)getMessage:(FLTDemoRequest*)input error:(FlutterError**)error {
+    FLTDemoReply* reply = [[FLTDemoReply alloc] init];
+    reply.result = @"pigeon demo result";
+    return reply;
+}
+
+@end
+
+```
+
+#### Dart
+最终在dart侧如何调用呢
+首先看一下lib下Pigeon生成的dart文件`PigeonDemoMessage.dart`
+`DemoReply、DemoRequest`用来实例化入参和出参
+然后通过`PigeonDemoApi`的实例去调用方法。
+
+```
+import 'dart:async';
+
+import 'package:flutter/services.dart';
+import 'PigeonDemoMessage.dart';
+
+class FlutterPigeonDemo {
+  static const MethodChannel _channel =
+      const MethodChannel('flutter_pigeon_demo');
+
+  static Future<String> get platformVersion async {
+    final String version = await _channel.invokeMethod('getPlatformVersion');
+    return version;
+  }
+
+  static Future<DemoReply> testPigeon() async {
+    // 初始化请求参数
+    DemoRequest requestParams = DemoRequest()..methodName = 'requestMessage';
+    // 通过PigeonDemoApi实例去调用方法
+    PigeonDemoApi api = PigeonDemoApi();
+    DemoReply reply = await api.getMessage(requestParams);
+    return reply;
+  }
+
+}
+
+```
+
+通过这套规则，在实现原生插件时我们可以少些很多重复代码，不需要定义methodchannel的name，直接通过重写pigeon暴露的方法就可以完成双端的通信。
