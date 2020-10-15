@@ -1,11 +1,18 @@
+![enter image description here](./img/flutterPigeon/pigeon.jpg)
+
 ### Flutter插件开发之Pigeon
 
 > Flutter开发中经常会需要用到插件包，而插件包中Android、iOS双端代码如何规范出参入参，如何跟dart侧实现统一。
-> Flutter官方提供了Pigeon插件，通过dart代码，生成通用的模板代码，Native部分只需实现对应逻辑，函数名，入参，出参均通过生成的模板代码进行约束。
+> Flutter官方提供了Pigeon插件，通过dart代码，生成双端通用的模板代码，Native部分只需通过重写模板内的接口，无需关心methodChannel实现，入参，出参也均通过生成的模板代码进行约束。
+
+[demo源码地址](https://github.com/linpenghui958/flutterPigeonDemo)
 
 warning：目前Pigeon还是prerelease版本，所以可能会有breaking change。下文以0.1.7版本为例。
 
+以Flutter官方plugin中的video_player为例，接入pigeon后最终效果如下
+![enter image description here](http://km.oa.com/files/photos/pictures/202010/1602749859_59_w805_h397.png)
 
+可以看到接入pigeon后整体代码简洁了不少，而且规范了类型定义。接下来我们看一下如何从零接入Pigeon。
 
 #### 创建package
 
@@ -28,13 +35,13 @@ flutter create --org com.exmple --template plugin flutterPigeonDemo
 - `example/`
   - 使用该插件的flutterdemo。
 
-这里常规通过methodchannel实现的部分省略，主要讲解一下如果接入pigeon插件。
+这里常规通过methodChannel实现的部分省略，主要讲解一下如果接入pigeon插件。
 
 
 
 #### Pigeon接入
 
-这里可以看一下pub.dev上Pigeon的[介绍](https://pub.dev/packages/pigeon)，Pigeon只会生成Flutter与native平台通信所需的模板代码，没有其他运行时的要求，所以也不用担心Pigeon版本不同而导致的冲突。（这里的确不同版本使用起来差异较大，笔者这里接入的时候0.1.7与0.1.10，pigeon默认导出和使用都不相同）
+首先可以看一下pub.dev上Pigeon的[介绍](https://pub.dev/packages/pigeon)，Pigeon只会生成Flutter与native平台通信所需的模板代码，没有其他运行时的要求，所以也不用担心Pigeon版本不同而导致的冲突。（这里的确不同版本使用起来差异较大，笔者这里接入的时候0.1.7与0.1.10，pigeon默认导出和使用都不相同）
 
 #### 添加依赖
 
@@ -87,7 +94,7 @@ void configurePigeon(PigeonOptions opts) {
 
 `configurePigeon`为执行pigeon生产双端模板代码的输出配置。
 
-- `dartOut`为dart侧调用文件
+- `dartOut`为dart侧输出位置
 - `objcHeaderOut、objcSourceOut`为iOS侧输出位置
 - `prefix`为插件默认的前缀
 - `javaOut、javaOptions.package`为Android侧输出位置和包名
@@ -98,17 +105,23 @@ void configurePigeon(PigeonOptions opts) {
 flutter pub run pigeon --input pigeons/pigeonDemoMessage.dart
 ```
 
-- `--input`为我们创建的目标文件
+- `--input`为我们的输入文件
 
-我们接下来看一下双端如何使用pigeon生成的模板文件。
+生成模板代码后的项目目录如下
+
+![enter image description here](http://km.oa.com/files/photos/pictures/202010/1602750092_94_w766_h1394.png)
+
+我们在Plugin库中只需要管理标红的dart文件，其余标绿的则为通过Pigeon自动生成的模板代码。
+
+我们接下来看一下双端如何使用pigeon生成的模板文件具体内容。
 
 #### Android
 
-这里通过Pigeon生产的`PigeonDemoMessage.java`文件中，可以看到入参和出参的定义`DemoRequest、DemoReply`，而`PigeonDemoApi`接口，后面需要在plugin中继承PigeonDemoApi并实现对应的方法，其中setup函数用来注册对应方法所需的methodchannel。
+这里通过Pigeon生产的`PigeonDemoMessage.java`文件中，可以看到入参和出参的定义`DemoRequest、DemoReply`，而`PigeonDemoApi`接口，后面需要在plugin中继承PigeonDemoApi并实现对应的方法，其中setup函数用来注册对应方法所需的methodChannel。
 
 > ps: 这里生成的PigeonDemoApi部分，setup使用了接口中静态方法的默认实现，这里需要api level 24才能支持，这里需要注意一下。
 
-首先需要在plugin文件中引入生成的PigeonDemoMessage。
+首先需要在plugin文件中引入生成的PigeonDemoMessage中的接口和类。
 FlutterPigeonDemoPlugin先要继承PigeonDemoApi。
 然后在onAttachedToEngine中进行PigeonDemoApi的setup注册。并在plugin中重写PigeonDemoApi中定义的getMessage方法
 
@@ -199,4 +212,4 @@ class FlutterPigeonDemo {
 
 ```
 
-通过这套规则，在实现原生插件时我们可以少些很多重复代码，不需要定义methodchannel的name，直接通过重写pigeon暴露的方法就可以完成双端的通信。
+通过这套规则，在实现原生插件时我们可以少些很多重复代码，并且不需要关心具体methodchannel的name，也避免了常规情况下，通过channel的name或者methodname来区分的面条式代码，只需通过重写pigeon暴露的方法就可以完成双端的通信。而dart侧也只需要通过模板暴露的实例对象来调用接口方法。
