@@ -11,7 +11,7 @@ warning：目前Pigeon还是prerelease版本，所以可能会有breaking change
 
 以Flutter官方plugin中的video_player为例，接入pigeon后最终效果如下
 
-![enter image description here](http://km.oa.com/files/photos/pictures/202010/1602749859_59_w805_h397.png)
+![demo](./img/flutterPigeon/pigeon1.jpg)
 
 可以看到接入pigeon后整体代码简洁了不少，而且规范了类型定义。接下来我们看一下如何从零接入Pigeon。
 
@@ -112,7 +112,7 @@ flutter pub run pigeon --input pigeons/pigeonDemoMessage.dart
 
 生成模板代码后的项目目录如下
 
-![enter image description here](http://km.oa.com/files/photos/pictures/202010/1602750092_94_w766_h1394.png)
+![catalogue](./img/flutterPigeon/pigeon2.jpg)
 
 我们在Plugin库中只需要管理标红的dart文件，其余标绿的则为通过Pigeon自动生成的模板代码。
 
