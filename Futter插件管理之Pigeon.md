@@ -2,12 +2,23 @@
 
 ### Flutter插件开发之Pigeon
 
-> Flutter开发中经常会需要用到插件包，而插件包中Android、iOS双端代码如何约束出参入参和规范接口命名，如何跟dart侧实现统一。
-> Flutter官方提供了Pigeon插件，通过dart入口，生成双端通用的模板代码，Native部分只需通过重写模板内的接口，无需关心methodChannel部分的具体实现，入参，出参也均通过生成的模板代码进行约束。
+> 导语：跨端开发中，经常会遇到插件，接口管理上的问题。了解完本文，你将会Flutter是如何通过Pigeon去解决plugin中多端开发难以管理的问题。
 
 [demo源码地址](https://github.com/linpenghui958/flutterPigeonDemo)
 
 warning：目前Pigeon还是prerelease版本，所以可能会有breaking change。下文以0.1.7版本为例。
+
+[toc]
+
+#### 为何需要Pigeon
+
+在hybird开发中，前端需要native能力，需要native双端开发提供接口。这种情况下就如何规范命名，参数等就成了一个问题，如果单独维护一份协议文件，三端依照协议文件进行开发，很容易出现协议更改后，没有及时同步，又或者在实际开发过程没有按照规范，可能导致各种意外情况。
+在Flutter插件包的开发中，因为涉及到native双端代码实现能力，dart侧暴露统一的接口给使用者，也会出现同样的问题，这里Flutter官方推荐使用Pigeon进行插件管理。
+
+#### Pigeon的作用
+
+Flutter官方提供的Pigeon插件，通过dart入口，生成双端通用的模板代码，Native部分只需通过重写模板内的接口，无需关心methodChannel部分的具体实现，入参，出参也均通过生成的模板代码进行约束。
+假设接口新增，或者参数修改，只需要在dart侧更新协议文件，生成双端模板，即可达到同步更新。
 
 以Flutter官方plugin中的video_player为例，接入pigeon后最终效果如下
 
@@ -15,7 +26,11 @@ warning：目前Pigeon还是prerelease版本，所以可能会有breaking change
 
 可以看到接入pigeon后整体代码简洁了不少，而且规范了类型定义。接下来我们看一下如何从零接入Pigeon。
 
-#### 创建package
+#### 接入Pigeon
+
+先看一下pub.dev上Pigeon的[介绍](https://pub.dev/packages/pigeon)，Pigeon只会生成Flutter与native平台通信所需的模板代码，没有其他运行时的要求，所以也不用担心Pigeon版本不同而导致的冲突。（这里的确不同版本使用起来差异较大，笔者这里接入的时候0.1.7与0.1.10，pigeon默认导出和使用都不相同）
+
+##### 创建package
 
 ps：如果接入已有plugin库，可以跳过此部分，直接看接入部分。
 
@@ -38,15 +53,7 @@ flutter create --org com.exmple --template plugin flutterPigeonDemo
 
 这里常规通过methodChannel实现plugin的部分省略，主要讲解一下如何接入pigeon插件。
 
-
-
-#### Pigeon接入
-
-先看一下pub.dev上Pigeon的[介绍](https://pub.dev/packages/pigeon)，Pigeon只会生成Flutter与native平台通信所需的模板代码，没有其他运行时的要求，所以也不用担心Pigeon版本不同而导致的冲突。（这里的确不同版本使用起来差异较大，笔者这里接入的时候0.1.7与0.1.10，pigeon默认导出和使用都不相同）
-
-
-
-#### 添加依赖
+##### 添加依赖
 
 首先在`pubspec.yaml`中添加依赖
 
@@ -118,7 +125,7 @@ flutter pub run pigeon --input pigeons/pigeonDemoMessage.dart
 
 我们接下来看一下双端如何使用Pigeon生成的模板文件。
 
-#### Android
+##### Android端接入
 
 这里Pigeon生产的`PigeonDemoMessage.java`文件中，可以看到入参和出参的定义`DemoRequest、DemoReply`，而`PigeonDemoApi`接口，后面需要在plugin中继承PigeonDemoApi并实现对应的方法，其中setup函数用来注册对应方法所需的methodChannel。
 
@@ -161,7 +168,7 @@ public class FlutterPigeonDemoPlugin: FlutterPlugin, MethodCallHandler, PigeonDe
 
 
 
-#### iOS
+##### iOS接入
 
 ios相关目录下的`PigeonDemoMessage.m`也有`FLTDemoReply、FLTDemoRequest、FLTPigeonDemoApiSetup`的实现。
 首先需要在plugin中引入头文件`PigeonDemoMessage.h`，需要在registerWithRegistrar中注册setup函数，并实现getMessage方法。
@@ -188,7 +195,7 @@ ios相关目录下的`PigeonDemoMessage.m`也有`FLTDemoReply、FLTDemoRequest�
 
 ```
 
-#### Dart
+##### Dart侧使用
 
 最终在dart侧如何调用呢
 首先看一下lib下Pigeon生成的dart文件`PigeonDemoMessage.dart`
@@ -223,7 +230,11 @@ class FlutterPigeonDemo {
 
 ```
 
-至此，Pigeon的接入就已经完成了，这里在demo中使用可能感觉接入Pigeon和常规实现差异不大，我们可以看下一Flutter官方plugin中的video_player接入前后的对比。
+至此，Pigeon的接入就已经完成了。
+
+#### 接入Pigeon后的效果
+
+本文demo代码较为简单，接入Pigeon前后的差异并不明显，我们可以看下一Flutter官方plugin中的video_player接入前后的对比。
 
 左侧为接入Pigeon前，处理逻辑都在onMethodCall中，不同的方法通过传入的call.method来区分，代码复杂后很容易变成面条式代码，而且返回的参数也没有约定，有较多不确定因素。
 
