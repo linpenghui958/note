@@ -1,21 +1,38 @@
-### Flutter FPS 监控
+### 如何获取Flutter APP的FPS
 
 众所周知，我们需要衡量一个APP的性能数据，其中FPS也作为其中一个非常重要的标准。
 
 这里我们了解一下如何获取Flutter应用中的FPS性能数据。
 
+### FPS是什么
 
+**帧率**是用于测量显示帧数的[量度](https://zh.wikipedia.org/wiki/量度)，可产生的图像的数量
+计量单位是帧/秒（Frame Per Second，FPS） 
+通常是评估硬件性能与游戏体验流畅度的指标
 
-1. FPS是什么
-2. 本地调试中，Flutter中如何获取FPS
-3. 线上如何获取FPS
-4. 
+### Flutter的渲染过程
 
+Flutter 关注如何尽可能快地在两个硬件时钟的 VSync 信号之间计算并合成视图数据，然后通过 Skia 交给 GPU 渲染：UI 线程使用 Dart 来构建视图结构数据，这些数据会在 GPU 线程进行图层合成，随后交给 Skia 引擎加工成 GPU 数据，而这些数据会通过 OpenGL 最终提供给 GPU 渲染
 
+![img](http://km.oa.com/files/photos/pictures/202008/1597306977_34_w1870_h450.png)
 
-官方再开发Flutter APP的过程中提供了许多查看FPS等性能的工具，比如[devtool](https://github.com/flutter/devtools)、具体的使用方式可以看一下[官方文档](https://flutter.dev/docs/perf/rendering/ui-performance)
+### 本地调试获取FPS
+
+官方提供了许多在开发Flutter APP的过程中查看FPS等性能的工具。
+
+- [devtool](https://github.com/flutter/devtools)
+
+  DevTool 的 [Timeline] 界面可以让开发者逐帧分析应用的 UI 性能，具体的使用方式可以看一下[官方文档](https://flutter.dev/docs/perf/rendering/ui-performance)
+
+- 性能图层
+
+![Screenshot of overlay showing zero jank](https://flutter.cn/assets/tools/devtools/performance-overlay-green-bb41b466cf6bcd529b285e1510b638086fc5afb8921b8ac5a6565dee5bc44788.png)
 
 在这些工具中我们只能在本地开发过程中获取FPS数据，如果要统计线上用户的真实数据，要在Flutter代码中计算FPS又该如何做呢？
+
+### 生成环境获取FPS
+
+#### Flutter相关性能指标定义
 
 在阅读官方文档的时候，有一个[FrameTiming](https://api.flutter.dev/flutter/dart-ui/FrameTiming-class.html)类描述了每一帧的时间相关的性能指标。
 
@@ -23,7 +40,7 @@
 
 这里更推荐使用SchedulerBinding.addTimingsCallBack来获取FPS相关数据。该回调允许多个回调方法，如果该方法不可用才考虑使用Window.onReportTimings。
 
-
+#### 性能数据获取
 
 这里看一下文档中[addTimingsCallback](https://api.flutter.dev/flutter/scheduler/SchedulerBinding/addTimingsCallback.html)的定义。
 
@@ -67,6 +84,8 @@ typedef TimingsCallback = void Function(List<FrameTiming> timings);
 上方的注释写到，这个回调接受一个FrameTiming的List，Flutter会尝试将这些帧合并后一次性发送，以减少开销。正常情况下一秒内会发送完所有帧，如果在profile/debug模式下，时间会缩短到100毫秒内。
 
 简而言之，callback将会得到一个**FrameTiming的List**。
+
+#### 具体信息分析
 
 这里知道在回调中可以拿到的是FrameTiming了，接下来看一下，如果通过这个帧信息可以获取到那些信息呢。
 
@@ -175,6 +194,8 @@ enum FramePhase {
 ```
 
 现在知道了如果获取最近`N个FrameTiming`和每个FrameTiming中所含有的时间戳信息，接下来看一下如果进行实际的FPS计算了。
+
+#### 计算FPS
 
 理所当然的去想，我们可以获取`总帧数`(FrameTiming List的长度)，总共的`耗时`(尾帧时间减去首帧时间)。是不是轻而易举就能算出FPS了呢。
 
